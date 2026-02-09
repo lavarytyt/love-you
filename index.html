@@ -14,7 +14,7 @@ body{
 
 .container{
     text-align:center;
-    margin-top:20vh;
+    margin-top:18vh;
     animation:fade 2s ease;
 }
 
@@ -23,7 +23,7 @@ p{font-size:18px;}
 
 input{
     padding:15px;
-    width:320px;
+    width:340px;
     border-radius:30px;
     border:none;
     font-size:16px;
@@ -51,17 +51,35 @@ button{
     display:none;
 }
 
-.photos img{
-    width:220px;
+.photo-card{
+    width:240px;
+    margin:20px auto;
+    padding:15px;
+    border-radius:25px;
+    background:white;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    opacity:0;
+    transform:translateY(30px);
+    animation:show 1.5s ease forwards;
+}
+
+.photo-card img{
+    width:100%;
     border-radius:20px;
-    margin:10px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    animation:pop 1.5s ease;
+}
+
+.photo-card p{
+    margin-top:10px;
+    font-size:18px;
+    color:#ff2f7d;
+    font-weight:bold;
 }
 
 .heart{
     position:absolute;
     animation:float 6s linear infinite;
+    font-size:20px;
+    pointer-events:none;
 }
 
 @keyframes float{
@@ -74,9 +92,8 @@ button{
     to{opacity:1; transform:translateY(0);}
 }
 
-@keyframes pop{
-    from{transform:scale(0);}
-    to{transform:scale(1);}
+@keyframes show{
+    to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -87,7 +104,7 @@ button{
     <h1>💌 Question pour Choupinette 💌</h1>
     <p><strong>KISA DEPI VARY WÈ LI TONBE DEPALE ?</strong></p>
 
-    <input type="text" id="answer" placeholder="Écris ta réponse ici 💕">
+    <input type="text" id="answer" placeholder="Écris la réponse 💕">
     <br>
     <button onclick="checkAnswer()">Valider 💖</button>
 
@@ -96,34 +113,47 @@ button{
 
 <div class="container" id="love">
     <h1>Choupinette 💗</h1>
-    <p>Depi ou reponn kestyon sa a… kè mwen se pou ou nèt 💞</p>
 
-    <div class="photos">
+    <div class="photo-card" style="animation-delay:0.5s">
         <img src="photo1.jpg">
+        <p>I love you ❤️</p>
+    </div>
+
+    <div class="photo-card" style="animation-delay:2s">
         <img src="photo2.jpg">
+        <p>I love you ❤️</p>
+    </div>
+
+    <div class="photo-card" style="animation-delay:3.5s">
         <img src="photo3.jpg">
+        <p>I love you ❤️</p>
     </div>
 </div>
 
 <script>
-const goodAnswer = "depi vary wè li tonbe depale";
+const goodAnswer = "fraises";
 
 function checkAnswer(){
-    let user = document.getElementById("answer").value.toLowerCase().trim();
+    let user = document.getElementById("answer").value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g," ");
+
     if(user === goodAnswer){
         document.getElementById("question").style.display="none";
         document.getElementById("love").style.display="block";
         hearts();
     } else {
-        document.getElementById("error").innerText = "Esaye ankò bbm 💕";
+        document.getElementById("error").innerText = "Eseye ankò bbm 💕";
     }
 }
 
 function hearts(){
+    const emojis = ["💗","🤍","💋","💘"];
     setInterval(()=>{
         let h=document.createElement("div");
         h.className="heart";
-        h.innerHTML = Math.random() > 0.5 ? "💗" : "🤍";
+        h.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
         h.style.left = Math.random()*100+"vw";
         h.style.fontSize = (20+Math.random()*25)+"px";
         document.body.appendChild(h);
