@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Choupinette 💖</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(120deg,#ffc0cb,#ffffff);
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+    margin-top:20vh;
+    animation:fade 2s ease;
+}
+
+h1{color:#ff2f7d;}
+p{font-size:18px;}
+
+input{
+    padding:15px;
+    width:320px;
+    border-radius:30px;
+    border:none;
+    font-size:16px;
+    outline:none;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 35px;
+    border:none;
+    border-radius:30px;
+    background:#ff5fa2;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#error{
+    margin-top:12px;
+    color:#ff3366;
+    font-weight:bold;
+}
+
+#love{
+    display:none;
+}
+
+.photos img{
+    width:220px;
+    border-radius:20px;
+    margin:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    animation:pop 1.5s ease;
+}
+
+.heart{
+    position:absolute;
+    animation:float 6s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+@keyframes fade{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes pop{
+    from{transform:scale(0);}
+    to{transform:scale(1);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="question">
+    <h1>💌 Question pour Choupinette 💌</h1>
+    <p><strong>KISA DEPI VARY WÈ LI TONBE DEPALE ?</strong></p>
+
+    <input type="text" id="answer" placeholder="Écris ta réponse ici 💕">
+    <br>
+    <button onclick="checkAnswer()">Valider 💖</button>
+
+    <div id="error"></div>
+</div>
+
+<div class="container" id="love">
+    <h1>Choupinette 💗</h1>
+    <p>Depi ou reponn kestyon sa a… kè mwen se pou ou nèt 💞</p>
+
+    <div class="photos">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+    </div>
+</div>
+
+<script>
+const goodAnswer = "depi vary wè li tonbe depale";
+
+function checkAnswer(){
+    let user = document.getElementById("answer").value.toLowerCase().trim();
+    if(user === goodAnswer){
+        document.getElementById("question").style.display="none";
+        document.getElementById("love").style.display="block";
+        hearts();
+    } else {
+        document.getElementById("error").innerText = "Esaye ankò bbm 💕";
+    }
+}
+
+function hearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML = Math.random() > 0.5 ? "💗" : "🤍";
+        h.style.left = Math.random()*100+"vw";
+        h.style.fontSize = (20+Math.random()*25)+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },300);
+}
+</script>
+
+</body>
+</html>
