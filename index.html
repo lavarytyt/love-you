@@ -48,22 +48,17 @@ button{
 
 #love{
     display:none;
-    position:relative;
-    height:60vh;
 }
 
 .photo-card{
     width:280px;
-    margin:0 auto;
+    margin:20px auto;
     padding:15px;
     border-radius:25px;
     background:white;
     box-shadow:0 15px 35px rgba(0,0,0,0.25);
-    position:absolute;
-    top:0;
-    left:50%;
-    transform:translateX(-50%) translateY(100px);
     opacity:0;
+    transform:translateY(50px);
 }
 
 .photo-card img{
@@ -90,10 +85,8 @@ button{
     to{transform:translateY(-10vh);}
 }
 
-@keyframes show{
-    0% {opacity:0; transform:translateY(100px);}
-    50% {opacity:1; transform:translateY(0);}
-    100% {opacity:0; transform:translateY(-50px);}
+@keyframes slideUp{
+    to {opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -112,6 +105,7 @@ button{
 </div>
 
 <div class="container" id="love">
+    <h1>Choupinette 💗</h1>
     <div class="photo-card"><img src="photo1.jpg"><p>I love you ❤️</p></div>
     <div class="photo-card"><img src="photo2.jpg"><p>I love you ❤️</p></div>
     <div class="photo-card"><img src="photo3.jpg"><p>I love you ❤️</p></div>
@@ -130,7 +124,7 @@ function checkAnswer(){
         document.getElementById("question").style.display="none";
         document.getElementById("love").style.display="block";
         hearts();
-        startSlideshow();
+        showPhotos();
     } else {
         document.getElementById("error").innerText = "Eseye ankò bbm 💕";
     }
@@ -150,21 +144,14 @@ function hearts(){
     },300);
 }
 
-// Diaporama otomatik
-function startSlideshow(){
+// Montre foto youn apre lòt ak animasyon "slide up"
+function showPhotos(){
     const photos = document.querySelectorAll(".photo-card");
-    let i = 0;
-
-    function showNext(){
-        photos.forEach(p=>{p.style.animation=""; p.style.opacity=0;}); // reset
-        if(i >= photos.length) return; // fini tout
-        const photo = photos[i];
-        photo.style.animation = "show 2s forwards";
-        i++;
-        setTimeout(showNext, 2500); // chak foto 2.5s
-    }
-
-    showNext();
+    photos.forEach((photo, index)=>{
+        setTimeout(()=>{
+            photo.style.animation = "slideUp 1s forwards";
+        }, index * 800); // chak foto 0.8s apre youn an
+    });
 }
 </script>
 
