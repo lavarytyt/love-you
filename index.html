@@ -9,12 +9,13 @@ body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
     background:linear-gradient(120deg,#ffc0cb,#ffffff);
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:hidden;
 }
 
 .container{
     text-align:center;
-    margin-top:15vh;
+    margin-top:10vh;
 }
 
 h1{color:#ff2f7d;}
@@ -48,17 +49,24 @@ button{
 
 #love{
     display:none;
+    position:relative;
+    width:100%;
+    height:70vh;
 }
 
 .photo-card{
     width:280px;
-    margin:20px auto;
+    margin:0 auto;
     padding:15px;
     border-radius:25px;
     background:white;
     box-shadow:0 15px 35px rgba(0,0,0,0.25);
     opacity:0;
     transform:translateY(50px);
+    position:absolute;
+    left:50%;
+    top:0;
+    transform:translateX(-50%) translateY(50px);
 }
 
 .photo-card img{
@@ -71,22 +79,28 @@ button{
     font-size:18px;
     color:#ff2f7d;
     font-weight:bold;
+    text-align:center;
 }
 
 .heart{
     position:absolute;
-    animation:float 6s linear infinite;
     font-size:20px;
     pointer-events:none;
+}
+
+@keyframes slideUp{
+    0% {opacity:0; transform:translateY(50px);}
+    100% {opacity:1; transform:translateY(0);}
+}
+
+@keyframes slideDown{
+    0% {opacity:1; transform:translateY(0);}
+    100% {opacity:0; transform:translateY(-50px);}
 }
 
 @keyframes float{
     from{transform:translateY(100vh);}
     to{transform:translateY(-10vh);}
-}
-
-@keyframes slideUp{
-    to {opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
@@ -105,14 +119,14 @@ button{
 </div>
 
 <div class="container" id="love">
-    <h1>Choupinette 💗</h1>
-    <div class="photo-card"><img src="photo1.jpg"><p>I love you ❤️</p></div>
-    <div class="photo-card"><img src="photo2.jpg"><p>I love you ❤️</p></div>
-    <div class="photo-card"><img src="photo3.jpg"><p>I love you ❤️</p></div>
+    <div class="photo-card" id="photo1"><img src="photo1.jpg"><p>I love you ❤️</p></div>
+    <div class="photo-card" id="photo2"><img src="photo2.jpg"><p>I love you ❤️</p></div>
+    <div class="photo-card" id="photo3"><img src="photo3.jpg"><p>I love you ❤️</p></div>
 </div>
 
 <script>
 const goodAnswer = "fraises";
+let heartInterval;
 
 function checkAnswer(){
     let user = document.getElementById("answer").value
@@ -123,17 +137,57 @@ function checkAnswer(){
     if(user === goodAnswer){
         document.getElementById("question").style.display="none";
         document.getElementById("love").style.display="block";
-        hearts();
-        showPhotos();
+        startSlideshowLoop();
     } else {
         document.getElementById("error").innerText = "Eseye ankò bbm 💕";
     }
 }
 
+// Slideshow ak loop
+function startSlideshowLoop(){
+    const photos = [
+        document.getElementById("photo1"),
+        document.getElementById("photo2"),
+        document.getElementById("photo3")
+    ];
+
+    function runSlideshow(){
+        // Reset foto
+        photos.forEach(p => {p.style.opacity=0; p.style.transform="translateX(-50%) translateY(50px)";});
+
+        // Foto 1
+        photos[0].style.animation = "slideUp 1s forwards";
+        setTimeout(()=>{
+            photos[0].style.animation = "slideDown 1s forwards";
+        }, 5000);
+
+        // Foto 2
+        setTimeout(()=>{
+            photos[1].style.animation = "slideUp 1s forwards";
+            setTimeout(()=>{
+                photos[1].style.animation = "slideDown 1s forwards";
+            },5000);
+        }, 5500);
+
+        // Foto 3
+        setTimeout(()=>{
+            photos[2].style.animation = "slideUp 1s forwards";
+            startHearts(); // kòmanse emoji pandan foto 3 vizib
+        }, 11000);
+
+        // Rekòmanse loop apre yon ti tan
+        setTimeout(runSlideshow, 18000); // 18s total
+    }
+
+    runSlideshow();
+}
+
 // Emoji animasyon
-function hearts(){
+function startHearts(){
     const emojis = ["💗","🤍","💋","💘"];
-    setInterval(()=>{
+    if(heartInterval) clearInterval(heartInterval);
+
+    heartInterval = setInterval(()=>{
         let h=document.createElement("div");
         h.className="heart";
         h.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
@@ -142,16 +196,6 @@ function hearts(){
         document.body.appendChild(h);
         setTimeout(()=>h.remove(),6000);
     },300);
-}
-
-// Montre foto youn apre lòt ak animasyon "slide up"
-function showPhotos(){
-    const photos = document.querySelectorAll(".photo-card");
-    photos.forEach((photo, index)=>{
-        setTimeout(()=>{
-            photo.style.animation = "slideUp 1s forwards";
-        }, index * 800); // chak foto 0.8s apre youn an
-    });
 }
 </script>
 
